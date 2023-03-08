@@ -12,7 +12,7 @@ public class RefreshToken {
     private String id;
 
     @DocumentReference
-    private User user;
+    private User owner;
 }
 
 

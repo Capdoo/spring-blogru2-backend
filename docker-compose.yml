@@ -1,3 +1,21 @@
+#NEW VERSIONS WITH NO TRANSACTIONAL
+#version: '3.8'
+#services:
+#  mongo:
+#    image: mongo:latest
+#    restart: always
+#    container_name: blogrudb
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: root
+#      MONGO_INITDB_ROOT_PASSWORD: example
+#      MONGO_INITDB_DATABASE: db1
+#    volumes:
+#      - ./data:/data/db
+#      - ./data/log:/var/log/mongodb
+#    ports:
+#      - "27017:27017"
+
+
 version: '2'
 
 services:

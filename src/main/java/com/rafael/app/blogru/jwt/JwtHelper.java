@@ -18,18 +18,17 @@ import java.util.Optional;
 public class JwtHelper {
 
     static final String issuer = "MyApp";
-    @Value("#{${accessTokenExpirationMinutes} * 60 * 1000 }")
+    @Value("#{5 * 60 * 1000}")
     private int accessTokenExpirationMs;
-    @Value("#{${refreshTokenExpirationDays} * 24 * 60 * 60 * 1000 }")
+    @Value("#{30 * 24 * 60 * 60 * 1000}")
     private int refreshTokenExpirationMs;
 
     private Algorithm accessTokenAlgorithm;
     private Algorithm refreshTokenAlgorithm;
-
     private JWTVerifier accessTokenVerifier;
     private JWTVerifier refreshTokenVerifier;
 
-    public JwtHelper(@Value("${accessTokenSecret}") String accessTokenSecret, @Value("refreshTokenSecret") String refreshTokenSecret) {
+    public JwtHelper(@Value("${accessTokenSecret}") String accessTokenSecret, @Value("${refreshTokenSecret}") String refreshTokenSecret) {
         accessTokenAlgorithm = Algorithm.HMAC512(accessTokenSecret);
         refreshTokenAlgorithm = Algorithm.HMAC512(refreshTokenSecret);
 
