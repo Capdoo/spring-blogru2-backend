@@ -20,15 +20,17 @@ public class JwtHelper {
     static final String issuer = "MyApp";
     @Value("#{5 * 60 * 1000}")
     private int accessTokenExpirationMs;
-    @Value("#{30 * 24 * 60 * 60 * 1000}")
-    private int refreshTokenExpirationMs;
+    private long refreshTokenExpirationMs;
 
     private Algorithm accessTokenAlgorithm;
     private Algorithm refreshTokenAlgorithm;
     private JWTVerifier accessTokenVerifier;
     private JWTVerifier refreshTokenVerifier;
 
-    public JwtHelper(@Value("${accessTokenSecret}") String accessTokenSecret, @Value("${refreshTokenSecret}") String refreshTokenSecret) {
+    public JwtHelper(@Value("${accessTokenSecret}") String accessTokenSecret, @Value("${refreshTokenSecret}") String refreshTokenSecret,
+                     @Value("${refreshTokenExpirationDays}") int refreshTokenExpirationDays) {
+
+        refreshTokenExpirationMs = (long) refreshTokenExpirationDays * 24 * 60 * 60 * 1000;
         accessTokenAlgorithm = Algorithm.HMAC512(accessTokenSecret);
         refreshTokenAlgorithm = Algorithm.HMAC512(refreshTokenSecret);
 
@@ -95,7 +97,7 @@ public class JwtHelper {
     }
 
     public String getTokenIdFromRefreshToken(String token){
-        return decodeRefreshToken(token).get().getClaim("tokenId").toString();
+        return decodeRefreshToken(token).get().getClaim("tokenId").asString();
     }
 
 }

@@ -48,7 +48,7 @@ public class AccessTokenFilter extends OncePerRequestFilter {
     private Optional<String> parseAccessToken(HttpServletRequest httpServletRequest){
         String authHeader = httpServletRequest.getHeader("Authorization");
         if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
-            return Optional.of(authHeader.replace("Bearer", ""));
+            return Optional.of(authHeader.replace("Bearer ", ""));
         }
         return Optional.empty();
     }
