@@ -32,11 +32,12 @@ public class AccessTokenFilter extends OncePerRequestFilter {
             Optional<String> accessToken = parseAccessToken(request);
             if (accessToken.isPresent() && jwtHelper.validateAccessToken(accessToken.get())){
                 String userId = jwtHelper.getUserIdFromAccessToken(accessToken.get());
-                User user = userService.findById(userId);
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-                usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                //User user = userService.findById(userId);
+                User userDetails = userService.findById(userId);
+                UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                upat.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                SecurityContextHolder.getContext().setAuthentication(upat);
 
             }
         }catch (Exception e){

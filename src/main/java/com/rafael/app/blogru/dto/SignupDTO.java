@@ -26,7 +26,6 @@ public class SignupDTO {
     @Size(min=6, max=60)
     private String password;
 
-    @NotBlank
     private Set<String> roles = new HashSet<>();
 
 }

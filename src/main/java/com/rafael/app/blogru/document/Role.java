@@ -15,8 +15,9 @@ public class Role {
     private String id;
 
     @Indexed(unique = true)
-    @NonNull
     private String name;
 
-
+    public Role(String name) {
+        this.name = name;
+    }
 }

@@ -21,8 +21,11 @@ public class UserService implements UserDetailsService {
     }
 
      public User findById(String id){
-        return userRepository.findById(id)
+
+        User userSource = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("User Id Not Found"));
+
+        return User.build(userSource);
      }
 }
 
