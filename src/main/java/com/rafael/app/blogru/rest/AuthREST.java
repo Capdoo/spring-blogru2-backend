@@ -1,6 +1,7 @@
 package com.rafael.app.blogru.rest;
 
 import com.rafael.app.blogru.document.RefreshToken;
+import com.rafael.app.blogru.document.Role;
 import com.rafael.app.blogru.document.User;
 import com.rafael.app.blogru.dto.LoginDTO;
 import com.rafael.app.blogru.dto.SignupDTO;
@@ -8,6 +9,7 @@ import com.rafael.app.blogru.dto.TokenDTO;
 import com.rafael.app.blogru.jwt.JwtHelper;
 import com.rafael.app.blogru.repository.RefreshTokenRepository;
 import com.rafael.app.blogru.repository.UserRepository;
+import com.rafael.app.blogru.service.RoleService;
 import com.rafael.app.blogru.service.UserService;
 import org.apache.tomcat.Jar;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -42,6 +46,8 @@ public class AuthREST {
     UserRepository userRepository;
     @Autowired
     UserService userService;
+    @Autowired
+    RoleService roleService;
 
     //For multiple devices
     @PostMapping("/login")
@@ -66,7 +72,21 @@ public class AuthREST {
     @PostMapping("/signup")
     @Transactional
     public ResponseEntity<?> signup(@Valid @RequestBody SignupDTO signupDTO){
+
         User user = new User(signupDTO.getUsername(), signupDTO.getEmail(), passwordEncoder.encode(signupDTO.getPassword()));
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleService.readByName("user"));
+
+        if (signupDTO.getRoles().contains("admin")){
+            roles.add(roleService.readByName("admin"));
+        }
+
+        if (signupDTO.getRoles().contains("superadmin")){
+            roles.add(roleService.readByName("superadmin"));
+        }
+
+        user.setRoles(roles);
         userRepository.save(user);
 
         RefreshToken refreshToken = new RefreshToken();
