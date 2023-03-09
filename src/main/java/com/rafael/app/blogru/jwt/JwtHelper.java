@@ -18,7 +18,8 @@ import java.util.Optional;
 public class JwtHelper {
 
     static final String issuer = "MyApp";
-    @Value("#{5 * 60 * 1000}")
+    //@Value("#{5 * 60 * 1000}")
+    @Value("#{60 * 60 * 1000}") //1h
     private int accessTokenExpirationMs;
     private long refreshTokenExpirationMs;
 

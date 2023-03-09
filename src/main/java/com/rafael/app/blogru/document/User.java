@@ -39,21 +39,15 @@ public class User implements UserDetails {
     @DocumentReference
     private Set<Role> roles;
 
+    @Transient
+    private Collection<? extends GrantedAuthority> authorities;
+
+
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
     }
-
-    public User(String username, String email, String password, Collection<? extends GrantedAuthority> authorities) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.authorities = authorities;
-    }
-
-    @Transient
-    private Collection<? extends GrantedAuthority> authorities;
 
 
     @Override
@@ -92,30 +86,7 @@ public class User implements UserDetails {
     }
 
 
-
-
-
-    //Se debe devolver esta clase con los roles en authorities
     /*
-    public static MainUserEntity build(UserEntity userEntity) {
-        //1. Obtener los roles
-        //2. Convertirlos a authorities
-        //(Se convierte la clase rol a la clase GrantedAuthority)
-        Set<RoleEntity> rolesUsuario = userEntity.getRoles();
-        List<GrantedAuthority> authorities = rolesUsuario.stream()
-                .map(rol->new SimpleGrantedAuthority(rol.getRolNombre().name()))
-                .collect(Collectors.toList());
-
-        //FormaSimplificada:
-        //List<GrantedAuthority> authorities = usuarioModel.getRoles()stream().map(rol->new SimpleGrantedAuthority(rol.getRolNombre().name())).collect(Collectors.toList());;
-
-        return new MainUserEntity(userEntity.getNombre(),
-                userEntity.getNombreUsuario(),
-                userEntity.getEmail(),
-                userEntity.getPassword(),
-                authorities);
-    }
-    */
     public static User build(User userSource){
         //1. Get roles
         //2. Convert into authorities
@@ -131,4 +102,5 @@ public class User implements UserDetails {
                 authorities
         );
     }
+     */
 }

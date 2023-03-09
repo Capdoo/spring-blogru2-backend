@@ -34,6 +34,10 @@ public class AccessTokenFilter extends OncePerRequestFilter {
                 String userId = jwtHelper.getUserIdFromAccessToken(accessToken.get());
                 //User user = userService.findById(userId);
                 User userDetails = userService.findById(userId);
+
+                System.out.println("printing my authorities from token filter");
+                userDetails.getAuthorities().forEach(System.out::println);
+
                 UsernamePasswordAuthenticationToken upat = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 upat.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
