@@ -46,8 +46,13 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public void deleteTopic(String id) {
+    public Topic deleteTopic(String id) {
+        Topic topicDelete = readTopic(id);
+        if (topicDelete == null){
+            return null;
+        }
         topicRepository.deleteById(id);
+        return topicDelete;
     }
 
     //business

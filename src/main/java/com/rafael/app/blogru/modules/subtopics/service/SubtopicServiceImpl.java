@@ -46,8 +46,13 @@ public class SubtopicServiceImpl implements SubtopicService{
     }
 
     @Override
-    public void deleteSubtopic(String id) {
+    public Subtopic deleteSubtopic(String id) {
+        Subtopic subtopicDelete = readSubtopic(id);
+        if (subtopicDelete == null){
+            return null;
+        }
         subtopicRepository.deleteById(id);
+        return subtopicDelete;
     }
 
     //business

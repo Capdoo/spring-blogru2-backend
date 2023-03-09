@@ -10,11 +10,9 @@ import java.util.Set;
 
 public class CommentModel {
 
-    @Id
     private String id;
     private String content;
-    @DocumentReference
-    private User commentator;
+    private String commentatorId;
     private Date registerDate;
 
 

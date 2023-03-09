@@ -72,8 +72,8 @@ public class SubtopicController {
         if (subtopicDB == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Subtopic not found");
         }
-        subtopicService.deleteSubtopic(id);
-        return ResponseEntity.ok().body(subtopicDB);
+        Subtopic subtopicDelete = subtopicService.deleteSubtopic(id);
+        return ResponseEntity.ok().body(this.convertSubtopictoDTO(subtopicDelete));
     }
 
 

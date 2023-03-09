@@ -13,7 +13,7 @@ public interface SubtopicService {
     Subtopic createSubtopic(SubtopicDTO subtopicDTO);
     Subtopic readSubtopic(String id);
     Subtopic updateSubtopic(SubtopicDTO subtopicDTO);
-    void deleteSubtopic(String id);
+    Subtopic deleteSubtopic(String id);
 
     //business
     Subtopic readSubtopicByName(String name);

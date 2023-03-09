@@ -70,8 +70,8 @@ public class TopicController {
         if (topicDB == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Topic not found");
         }
-        topicService.deleteTopic(id);
-        return ResponseEntity.ok().body(topicDB);
+        Topic topicDelete = topicService.deleteTopic(id);
+        return ResponseEntity.ok().body(this.convertTopicToDTO(topicDelete));
     }
 
     private TopicDTO convertTopicToDTO(Topic topic){

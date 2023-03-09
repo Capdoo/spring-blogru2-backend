@@ -13,7 +13,7 @@ public interface TopicService {
     Topic createTopic(TopicDTO topicDTO);
     Topic readTopic(String id);
     Topic updateTopic(TopicDTO topicDTO);
-    void deleteTopic(String id);
+    Topic deleteTopic(String id);
 
     //business...
     Topic readTopicByName(String name);
