@@ -1,5 +1,8 @@
 package com.rafael.app.blogru.util;
 
+import com.rafael.app.blogru.modules.subtopics.document.Subtopic;
+import com.rafael.app.blogru.modules.subtopics.repository.SubtopicRepository;
+import com.rafael.app.blogru.modules.subtopics.service.SubtopicService;
 import com.rafael.app.blogru.modules.topics.document.Topic;
 import com.rafael.app.blogru.modules.topics.repository.TopicRepository;
 import com.rafael.app.blogru.modules.topics.service.TopicService;
@@ -26,6 +29,10 @@ public class InitData implements CommandLineRunner {
     TopicService topicService;
     @Autowired
     TopicRepository topicRepository;
+    @Autowired
+    SubtopicService subtopicService;
+    @Autowired
+    SubtopicRepository subtopicRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -54,13 +61,24 @@ public class InitData implements CommandLineRunner {
                         insertTopics.add(topic);
                     }
                 });
-//        String[] mainTopics = new String[] {"Science","Math","Chemistry","Physics","Geometry"};
-//        for (String p:mainTopics){
-//            if (topicService.readTopicByName(p) == null){
-//                Topic topic = new Topic(p, mainTopicsMap.get(p));
-//                insertTopics.add(topic);
-//            }
-//        }
         topicRepository.saveAll(insertTopics);
+
+
+        List<Subtopic> insertSubtopics = new ArrayList<>();
+        Map<String, String> mainSubtopicsMap = new HashMap<>();
+        mainSubtopicsMap.put("Interesting","Interesting things");
+        mainSubtopicsMap.put("Curious","Curious things");
+        mainSubtopicsMap.put("Discovery","New things related to a field");
+        mainSubtopicsMap.put("Big question","A big question related to a field");
+        mainSubtopicsMap.put("Rememorate","Remember a specific date");
+
+        mainSubtopicsMap.entrySet().forEach( v -> {
+            if (subtopicService.readSubtopicByName(v.getKey()) == null){
+                Subtopic subtopic = new Subtopic(v.getKey(), v.getValue());
+                insertSubtopics.add(subtopic);
+            }
+        });
+        subtopicRepository.saveAll(insertSubtopics);
+
     }
 }

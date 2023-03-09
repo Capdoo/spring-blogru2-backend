@@ -1,4 +1,4 @@
-package com.rafael.app.blogru.modules.topics.document;
+package com.rafael.app.blogru.modules.subtopics.document;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,7 @@ import java.util.Date;
 @Document
 @Data
 @NoArgsConstructor @AllArgsConstructor
-public class Topic {
+public class Subtopic {
 
     @Id
     private String id;
@@ -19,7 +19,7 @@ public class Topic {
     private String description;
     private Date registerDate;
 
-    public Topic(String name, String description){
+    public Subtopic(String name, String description){
         this.name = name;
         this.description = description;
         this.registerDate = new Date();

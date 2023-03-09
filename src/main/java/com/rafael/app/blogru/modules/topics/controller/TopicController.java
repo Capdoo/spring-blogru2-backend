@@ -53,7 +53,7 @@ public class TopicController {
 
     @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin')")
     @PutMapping("/{id}")
-    public ResponseEntity<Object> registerTopic(@PathVariable(value = "id") String id, @RequestBody TopicDTO topicDTO){
+    public ResponseEntity<Object> updateTopic(@PathVariable(value = "id") String id, @RequestBody TopicDTO topicDTO){
         Topic topicDB = topicService.readTopic(id);
         if (topicDB == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Topic not found");
@@ -65,7 +65,7 @@ public class TopicController {
 
     @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> registerTopic(@PathVariable(value = "id") String id){
+    public ResponseEntity<Object> deleteTopic(@PathVariable(value = "id") String id){
         Topic topicDB = topicService.readTopic(id);
         if (topicDB == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Topic not found");
