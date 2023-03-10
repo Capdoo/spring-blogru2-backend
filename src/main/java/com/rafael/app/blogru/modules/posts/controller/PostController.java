@@ -100,7 +100,6 @@ public class PostController {
                 .register_date(post.getRegisterDate().toString())
                 .headers(post.getHeaders())
                 .paragraphs(post.getParagraphs())
-                .comments(post.getComments())
                 .build();
     }
 

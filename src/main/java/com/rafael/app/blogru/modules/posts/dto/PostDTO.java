@@ -1,6 +1,5 @@
 package com.rafael.app.blogru.modules.posts.dto;
 
-import com.rafael.app.blogru.modules.posts.models.CommentModel;
 import com.rafael.app.blogru.modules.posts.models.HeaderModel;
 import com.rafael.app.blogru.modules.posts.models.ParagraphModel;
 import lombok.Builder;
@@ -25,6 +24,5 @@ public class PostDTO {
     //Content
     private List<HeaderModel> headers;
     private List<ParagraphModel> paragraphs;
-    private List<CommentModel> comments;
 
 }
