@@ -11,5 +11,6 @@ public class HeaderModel {
     @Id
     private String id;
     private String content;
+    private Integer order;
 
 }

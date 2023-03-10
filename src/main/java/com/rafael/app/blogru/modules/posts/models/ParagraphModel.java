@@ -12,6 +12,7 @@ public class ParagraphModel {
     @Id
     private String id;
     private String content;
-    private Integer targetHeader;
+    private Integer target;
+    private Integer suborder;
 
 }

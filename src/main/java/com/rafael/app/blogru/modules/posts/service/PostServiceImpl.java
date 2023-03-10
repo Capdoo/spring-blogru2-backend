@@ -2,6 +2,7 @@ package com.rafael.app.blogru.modules.posts.service;
 
 import com.rafael.app.blogru.modules.posts.document.Post;
 import com.rafael.app.blogru.modules.posts.dto.PostDTO;
+import com.rafael.app.blogru.modules.posts.models.HeaderModel;
 import com.rafael.app.blogru.modules.posts.repository.PostRepository;
 import com.rafael.app.blogru.modules.subtopics.document.Subtopic;
 import com.rafael.app.blogru.modules.subtopics.service.SubtopicService;
@@ -38,6 +39,11 @@ public class PostServiceImpl implements PostService{
         Topic topicSelected = topicService.readTopic(postDTO.getTopic_id());
         Subtopic subtopicSelected = subtopicService.readSubtopic(postDTO.getSubtopic_id());
         User userCreator = userService.findById(postDTO.getUser_id());
+
+
+        //Assign id to paragraphs
+
+
         Post postCreate = Post.builder()
                 .title(postDTO.getTitle())
                 .summary(postDTO.getSummary())
@@ -71,6 +77,7 @@ public class PostServiceImpl implements PostService{
         postDB.setTopic(topicUpdate);
         postDB.setSubtopic(subtopicUpdate);
         //content
+
         postDB.setHeaders(postDTO.getHeaders());
         postDB.setParagraphs(postDTO.getParagraphs());
         return postRepository.save(postDB);
