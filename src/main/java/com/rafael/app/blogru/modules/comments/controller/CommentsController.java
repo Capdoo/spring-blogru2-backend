@@ -15,6 +15,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/comments")
 public class CommentsController {
@@ -27,6 +29,17 @@ public class CommentsController {
     UserService userService;
     @Autowired
     PostService postService;
+
+    @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin') or hasAuthority('user') or hasAuthority('creator')")
+    @GetMapping("/{id}")
+    ResponseEntity<Object> getAllComentsByPostId(@PathVariable(value = "id") String postId){
+        Post post = postService.readPost(postId);
+        if (post == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post does not exists");
+        }
+        List<CommentModel> listCommentsFromPost = commentsService.readCommentsByPostId(postId);
+        return ResponseEntity.ok().body(listCommentsFromPost);
+    }
 
     @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin') or hasAuthority('creator')")
     @PostMapping
@@ -44,14 +57,65 @@ public class CommentsController {
         }
         CommentModel createComment = commentsService.createComment(commentDTO);
         return ResponseEntity.ok().body(createComment);
+    }
 
+    @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin') or hasAuthority('user') or hasAuthority('creator')")
+    @GetMapping("/single/{id}")
+    ResponseEntity<Object> getComentByPostIdAndCommentId(@PathVariable(value = "id") String postId, @RequestParam(value = "id") Integer id){
+        Post post = postService.readPost(postId);
+        if (post == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post does not exists");
+        }
+        if (post.getComments() == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No comments found");
+        }
+        CommentModel commentTarget = commentsService.readComment(postId, id);
+        if (commentTarget == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comment not found");
+        }
+        return ResponseEntity.ok().body(commentTarget);
+    }
+
+    @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin') or hasAuthority('creator')")
+    @PutMapping("/{id}")
+    ResponseEntity<Object> updateComment(@PathVariable(value = "id") String postId, @RequestParam(value = "id") Integer id, @RequestBody CommentDTO commentDTO){
+        Post post = postService.readPost(postId);
+        if (post == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post does not exists");
+        }
+        if (post.getComments() == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No comments found");
+        }
+        CommentModel commentTarget = commentsService.readComment(postId, id);
+        if (commentTarget == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comment not found");
+        }
+        commentDTO.setPost_id(postId);
+        CommentModel commentUpdate = commentsService.updateComment(commentDTO, id);
+        return ResponseEntity.ok().body(commentUpdate);
+    }
+
+
+    @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin') or hasAuthority('creator')")
+    @DeleteMapping("/{id}")
+    ResponseEntity<Object> deleteComment(@PathVariable(value = "id") String postId, @RequestParam(value = "id") Integer id){
+        Post post = postService.readPost(postId);
+        if (post == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post does not exists");
+        }
+        if (post.getComments() == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No comments found");
+        }
+        CommentModel commentTarget = commentsService.readComment(postId, id);
+        if (commentTarget == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comment not found");
+        }
+        CommentModel commentDelete = commentsService.deleteComment(postId, id);
+        return ResponseEntity.ok().body(commentDelete);
     }
 
 
 
 
 
-
-
-
-}
+    }

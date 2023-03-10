@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentsServiceImpl implements CommentsService{
@@ -61,22 +63,54 @@ public class CommentsServiceImpl implements CommentsService{
     }
 
     @Override
-    public CommentModel readComment(String commentsId, String commentId) {
-        return null;
+    public CommentModel readComment(String postId, Integer commentId) {
+        Comments comments = postService.readPost(postId).getComments();
+        List<CommentModel> sendList = comments.getCommentsList().stream()
+                .filter( comment -> Objects.equals(comment.getId(), commentId))
+                .collect(Collectors.toList());
+        return sendList.size() == 0 ? null : sendList.get(0);
     }
 
     @Override
-    public CommentModel updateComment(CommentDTO commentDTO) {
-        return null;
+    public CommentModel updateComment(CommentDTO commentDTO, Integer commentId) {
+        Post post = postService.readPost(commentDTO.getPost_id());
+        Comments comments = post.getComments();
+        List<CommentModel> listCommentsOriginal = comments.getCommentsList();
+
+        List<CommentModel> auxiliar = listCommentsOriginal.stream().filter( comment -> comment.getId().equals(commentId)).collect(Collectors.toList());
+        CommentModel target = auxiliar.get(0);
+        target.setContent(commentDTO.getContent());
+        //Since is ordered
+        listCommentsOriginal.set(commentId, target);
+
+        comments.setCommentsList(listCommentsOriginal);
+        commentsRepository.save(comments);
+
+        return target;
     }
 
     @Override
-    public CommentModel deleteComment(String commentsId, String commentId) {
-        return null;
+    public CommentModel deleteComment(String postId, Integer commentId) {
+        Post post = postService.readPost(postId);
+        Comments comments = post.getComments();
+        List<CommentModel> auxiliar = comments.getCommentsList().stream().filter( comment -> comment.getId().equals(commentId)).collect(Collectors.toList());
+        List<CommentModel> updateListComments = comments.getCommentsList().stream().filter( value -> !Objects.equals(value.getId(), commentId)).collect(Collectors.toList());
+        comments.setCommentsList(updateListComments);
+        commentsRepository.save(comments);
+        return auxiliar.size() == 0 ? null : auxiliar.get(0);
     }
 
     @Override
     public List<CommentModel> readCommentsByPostId(String postId) {
-        return null;
+        Post post = postService.readPost(postId);
+        return post.getComments().getCommentsList();
     }
+
+    @Override
+    public Comments readCommentsCollection(String id) {
+        return commentsRepository.findById(id).orElse(null);
+    }
+
+
+
 }
