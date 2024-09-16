@@ -1,20 +1,23 @@
 package com.rafael.app.blogru.modules.posts.service;
 
 import com.rafael.app.blogru.modules.posts.document.Post;
-import com.rafael.app.blogru.modules.posts.dto.PostDTO;
-import com.rafael.app.blogru.modules.posts.models.HeaderModel;
+import com.rafael.app.blogru.modules.posts.dto.PostDto;
 import com.rafael.app.blogru.modules.posts.repository.PostRepository;
+import com.rafael.app.blogru.modules.sections.document.Section;
+import com.rafael.app.blogru.modules.sections.service.SectionService;
 import com.rafael.app.blogru.modules.subtopics.document.Subtopic;
 import com.rafael.app.blogru.modules.subtopics.service.SubtopicService;
 import com.rafael.app.blogru.modules.topics.document.Topic;
 import com.rafael.app.blogru.modules.topics.service.TopicService;
 import com.rafael.app.blogru.security.document.User;
 import com.rafael.app.blogru.security.service.UserService;
+import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements PostService{
@@ -27,15 +30,44 @@ public class PostServiceImpl implements PostService{
     SubtopicService subtopicService;
     @Autowired
     UserService userService;
+    @Autowired
+    SectionService sectionService;
 
     @Override
     public List<Post> readAllPosts() {
         return postRepository.findAll();
     }
 
-    //First time
     @Override
-    public Post createPost(PostDTO postDTO) {
+    public Post createPost(PostDto postDTO) {
+        Post postCreate;
+        Topic topic;
+        Subtopic subtopic;
+        User user;
+        List<Section> listSections;
+
+        topic = topicService.readTopic(postDTO.getTopic_id());
+        subtopic = subtopicService.readSubtopic(postDTO.getSubtopic_id());
+        user = userService.findById(postDTO.getUser_id());
+        listSections = postDTO.getListSectionsDto().stream()
+                .map(this.sectionService::createSection)
+                .collect(Collectors.toList());
+
+        postCreate = Post.builder()
+                .title(postDTO.getTitle())
+                .summary(postDTO.getSummary())
+                .topic(topic)
+                .subtopic(subtopic)
+                .user(user)
+                .registerDate(new Date())
+                .listSections(listSections)
+                .build();
+        return postRepository.save(postCreate);
+    }
+
+    //First time
+//    @Override
+    public Post createPostVo(PostDto postDTO) {
         Topic topicSelected = topicService.readTopic(postDTO.getTopic_id());
         Subtopic subtopicSelected = subtopicService.readSubtopic(postDTO.getSubtopic_id());
         User userCreator = userService.findById(postDTO.getUser_id());
@@ -52,8 +84,8 @@ public class PostServiceImpl implements PostService{
                 .user(userCreator)
                 .registerDate(new Date())
                 //content
-                .headers(postDTO.getHeaders())
-                .paragraphs(postDTO.getParagraphs())
+//                .headers(postDTO.getHeaders())
+//                .paragraphs(postDTO.getParagraphs())
                 .build();
         return postRepository.save(postCreate);
     }
@@ -64,7 +96,7 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public Post updatePost(PostDTO postDTO) {
+    public Post updatePost(PostDto postDTO) {
         Post postDB = readPost(postDTO.getId());
         if (postDB == null){
             return null;
@@ -78,8 +110,8 @@ public class PostServiceImpl implements PostService{
         postDB.setSubtopic(subtopicUpdate);
         //content
 
-        postDB.setHeaders(postDTO.getHeaders());
-        postDB.setParagraphs(postDTO.getParagraphs());
+//        postDB.setHeaders(postDTO.getHeaders());
+//        postDB.setParagraphs(postDTO.getParagraphs());
         return postRepository.save(postDB);
     }
 
@@ -98,5 +130,4 @@ public class PostServiceImpl implements PostService{
     public Post readByTitle(String title) {
         return postRepository.findByTitle(title).orElse(null);
     }
-
 }

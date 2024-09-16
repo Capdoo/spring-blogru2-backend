@@ -13,10 +13,8 @@ import java.util.List;
 @Data
 @Builder
 public class Comments {
-
     @Id
     private String id;
     private List<CommentModel> commentsList;
     private Date registerDate;
-
 }
