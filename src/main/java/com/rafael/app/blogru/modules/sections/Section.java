@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
+import java.util.Date;
 import java.util.List;
 
 @Document
@@ -22,4 +23,7 @@ public class Section {
     private Header header;
     @DocumentReference
     private List<Paragraph> listParagraphs;
+    private Date registerDate;
+    private String userId;
+    private Date modificationDate;
 }

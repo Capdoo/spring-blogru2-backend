@@ -19,13 +19,11 @@ public class PostMapper {
                 .id(post.getId())
                 .title(post.getTitle())
                 .summary(post.getSummary())
-                .topic_id(post.getTopic().getId())
-                .subtopic_id(post.getSubtopic().getId())
-                .user_id(post.getUser().getId())
+                .topicId(post.getTopic().getId())
+                .subtopicId(post.getSubtopic().getId())
+                .userId(post.getUser().getId())
                 .register_date(post.getRegisterDate().toString())
                 .listSectionsDto(listSectionsDto)
-//                .headers(post.getHeaders())
-//                .paragraphs(post.getParagraphs())
                 .build();
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
+import java.util.Date;
 import java.util.List;
 
 @Document
@@ -17,4 +18,7 @@ public class Paragraph {
     private String title;
     private String description;
     private String content;
+    private Date registerDate;
+    private String userId;
+    private Date modificationDate;
 }

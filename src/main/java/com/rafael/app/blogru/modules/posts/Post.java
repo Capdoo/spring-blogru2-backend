@@ -1,6 +1,6 @@
 package com.rafael.app.blogru.modules.posts;
 
-import com.rafael.app.blogru.modules.comments.Comments;
+import com.rafael.app.blogru.modules.comments.Comment;
 import com.rafael.app.blogru.modules.sections.Section;
 import com.rafael.app.blogru.modules.subtopics.Subtopic;
 import com.rafael.app.blogru.modules.topics.Topic;
@@ -29,11 +29,14 @@ public class Post {
     @DocumentReference
     private User user;
     @DocumentReference
-    private Comments comments;
-    private Date registerDate;
+    private Comment comment;
     //contentv2
     @DocumentReference
     private List<Section> listSections;
+    @DocumentReference
+    private List<Comment> listComments;
+    private Date registerDate;
+    private Date modificationDate;
     //Content
 //    private List<HeaderModel> headers;
 //    private List<ParagraphModel> paragraphs;

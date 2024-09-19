@@ -18,6 +18,8 @@ public class Topic {
     private String name;
     private String description;
     private Date registerDate;
+    private String userId;
+    private Date modificationDate;
 
     public Topic(String name, String description){
         this.name = name;

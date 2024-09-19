@@ -45,9 +45,9 @@ public class PostServiceImpl implements PostService {
         User user;
         List<Section> listSections;
 
-        topic = topicService.readTopic(postDTO.getTopic_id());
-        subtopic = subtopicService.readSubtopic(postDTO.getSubtopic_id());
-        user = userService.findById(postDTO.getUser_id());
+        topic = topicService.readTopic(postDTO.getTopicId());
+        subtopic = subtopicService.readSubtopic(postDTO.getSubtopicId());
+        user = userService.findById(postDTO.getUserId());
         listSections = postDTO.getListSectionsDto().stream()
                 .map(this.sectionService::createSection)
                 .collect(Collectors.toList());
@@ -67,9 +67,9 @@ public class PostServiceImpl implements PostService {
     //First time
 //    @Override
     public Post createPostVo(PostDto postDTO) {
-        Topic topicSelected = topicService.readTopic(postDTO.getTopic_id());
-        Subtopic subtopicSelected = subtopicService.readSubtopic(postDTO.getSubtopic_id());
-        User userCreator = userService.findById(postDTO.getUser_id());
+        Topic topicSelected = topicService.readTopic(postDTO.getTopicId());
+        Subtopic subtopicSelected = subtopicService.readSubtopic(postDTO.getSubtopicId());
+        User userCreator = userService.findById(postDTO.getUserId());
 
 
         //Assign id to paragraphs
@@ -106,11 +106,11 @@ public class PostServiceImpl implements PostService {
             return null;
         }
         //general
-        topic = topicService.readTopic(postDto.getTopic_id());
+        topic = topicService.readTopic(postDto.getTopicId());
         if (topic == null) {
             return null;
         }
-        subtopic = subtopicService.readSubtopic(postDto.getSubtopic_id());
+        subtopic = subtopicService.readSubtopic(postDto.getSubtopicId());
         if (subtopic == null) {
             return null;
         }

@@ -44,7 +44,7 @@ public class PostResource {
 
         //Set creator id
         user_id = jwtHelper.getUserIdFromAccessToken(token.split(" ")[1]);
-        postDTO.setUser_id(user_id);
+        postDTO.setUserId(user_id);
         userSelected = userService.findById(user_id);
         if (userSelected == null) {  //Remove
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User does not exists");

@@ -7,6 +7,8 @@ import com.rafael.app.blogru.modules.headers.HeaderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class HeaderServiceImpl implements HeaderService {
 
@@ -18,6 +20,7 @@ public class HeaderServiceImpl implements HeaderService {
         Header headerCreate;
         headerCreate = Header.builder()
                 .title(headerDto.getTitle())//aqui pueden ir temas de estilos
+                .registerDate(new Date())
                 .build();
         return headerRepository.save(headerCreate);
     }

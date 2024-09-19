@@ -14,16 +14,11 @@ public class PostDto {
     private String title;
     private String summary;
 
-    private String topic_id;
+    private String topicId;
+    private String subtopicId;
 
-    private String subtopic_id;
-    private String user_id;
+    private String userId;
     private String register_date;
 
     private List<SectionDto> listSectionsDto;
-
-    //Content
-//    private List<HeaderModel> headers;
-//    private List<ParagraphModel> paragraphs;
-
 }
