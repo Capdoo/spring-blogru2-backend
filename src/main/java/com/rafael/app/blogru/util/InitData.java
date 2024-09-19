@@ -1,11 +1,11 @@
 package com.rafael.app.blogru.util;
 
-import com.rafael.app.blogru.modules.subtopics.document.Subtopic;
-import com.rafael.app.blogru.modules.subtopics.repository.SubtopicRepository;
-import com.rafael.app.blogru.modules.subtopics.service.SubtopicService;
-import com.rafael.app.blogru.modules.topics.document.Topic;
-import com.rafael.app.blogru.modules.topics.repository.TopicRepository;
-import com.rafael.app.blogru.modules.topics.service.TopicService;
+import com.rafael.app.blogru.modules.subtopics.Subtopic;
+import com.rafael.app.blogru.modules.subtopics.SubtopicRepository;
+import com.rafael.app.blogru.modules.subtopics.SubtopicService;
+import com.rafael.app.blogru.modules.topics.Topic;
+import com.rafael.app.blogru.modules.topics.TopicRepository;
+import com.rafael.app.blogru.modules.topics.TopicService;
 import com.rafael.app.blogru.security.document.Role;
 import com.rafael.app.blogru.security.repository.RoleRepository;
 import com.rafael.app.blogru.security.service.RoleService;
