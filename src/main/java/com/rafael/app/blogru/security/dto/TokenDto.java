@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class TokenDTO {
+public class TokenDto {
 
     private String userId;
 

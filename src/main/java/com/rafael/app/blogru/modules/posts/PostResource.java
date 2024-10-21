@@ -36,7 +36,7 @@ public class PostResource {
         return ResponseEntity.ok().body(listPostDto);
     }
 
-    public ResponseEntity<Object> createPost(@RequestHeader("Authorization") String token, @RequestBody PostDto postDTO) {
+    public ResponseEntity<Object> createPost(String token, PostDto postDTO) {
         Post postDb;
         Post postCreate;
         String user_id;
@@ -56,6 +56,31 @@ public class PostResource {
         }
         postCreate = postService.createPost(postDTO);
         return ResponseEntity.ok().body(PostMapper.mapPostDto(postCreate));
+    }
+
+    public ResponseEntity<Object> readPostsByUserId(String token) {
+        String userId;
+        User user;
+        List<Post> listPosts;
+        List<PostDto> listPostsDto;
+
+        userId = jwtHelper.getUserIdFromAccessToken(token.split(" ")[1]);
+        user = userService.findById(userId);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
+        }
+
+        listPosts = postService.readByUser(user);
+
+        if (listPosts.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No posts were found");
+        }
+
+        listPostsDto = listPosts.stream()
+                .map(PostMapper::mapPostDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(listPostsDto);
     }
 
     public ResponseEntity<Object> readPostById(@PathVariable(value = "id") String id) {

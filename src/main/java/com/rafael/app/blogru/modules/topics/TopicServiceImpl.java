@@ -1,9 +1,5 @@
 package com.rafael.app.blogru.modules.topics;
 
-import com.rafael.app.blogru.modules.topics.Topic;
-import com.rafael.app.blogru.modules.topics.TopicDTO;
-import com.rafael.app.blogru.modules.topics.TopicRepository;
-import com.rafael.app.blogru.modules.topics.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +18,10 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public Topic createTopic(TopicDTO topicDTO) {
+    public Topic createTopic(TopicDto topicDTO) {
         Topic createTopic = new Topic();
         createTopic.setName(topicDTO.getName());
-        createTopic.setDescription(topicDTO.getDescription());
+        createTopic.setImage(topicDTO.getDescription());
         createTopic.setRegisterDate(new Date());
         return topicRepository.save(createTopic);
     }
@@ -36,13 +32,13 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public Topic updateTopic(TopicDTO topicDTO) {
+    public Topic updateTopic(TopicDto topicDTO) {
         Topic topic = readTopic(topicDTO.getId());
         if (topic == null){
             return null;
         }
         topic.setName(topicDTO.getName());
-        topic.setDescription(topicDTO.getDescription());
+        topic.setImage(topicDTO.getDescription());
         return topicRepository.save(topic);
     }
 

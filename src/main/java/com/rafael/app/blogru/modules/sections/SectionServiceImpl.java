@@ -5,10 +5,6 @@ import com.rafael.app.blogru.modules.headers.HeaderService;
 import com.rafael.app.blogru.modules.paragraphs.Paragraph;
 import com.rafael.app.blogru.modules.paragraphs.ParagraphDto;
 import com.rafael.app.blogru.modules.paragraphs.ParagraphService;
-import com.rafael.app.blogru.modules.sections.Section;
-import com.rafael.app.blogru.modules.sections.SectionDto;
-import com.rafael.app.blogru.modules.sections.SectionRepository;
-import com.rafael.app.blogru.modules.sections.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,10 +25,10 @@ public class SectionServiceImpl implements SectionService {
     @Override
     public Section createSection(SectionDto sectionDto) {
         Section sectionCreate;
-        Header header;
+//        Header header;
         List<Paragraph> listParagraphs;
 
-        header = headerService.createHeader(sectionDto.getHeaderDto());
+//        header = headerService.createHeader(sectionDto.getHeaderDto());
 
         listParagraphs = sectionDto.getListParagraphsDto().stream()
                 .map(this.paragraphService::createParagraph)
@@ -40,8 +36,8 @@ public class SectionServiceImpl implements SectionService {
 
         sectionCreate = Section.builder()
                 .title(sectionDto.getTitle())
-                .target(sectionDto.getTarget())
-                .header(header)
+//                .target(sectionDto.getTarget())
+//                .header(header)
                 .listParagraphs(listParagraphs)
                 .build();
 
@@ -56,14 +52,14 @@ public class SectionServiceImpl implements SectionService {
     @Override
     public Section updateSection(SectionDto sectionDto) {
         Section sectionUpdate;
-        Header header;
+//        Header header;
         List<Paragraph> listParagraphs;
 
-        if (sectionDto.getHeaderDto().getId() == null) {//create header
-            header = this.headerService.createHeader(sectionDto.getHeaderDto());
-        } else {//update header
-            header = this.headerService.updateHeader(sectionDto.getHeaderDto());
-        }
+//        if (sectionDto.getHeaderDto().getId() == null) {//create header
+//            header = this.headerService.createHeader(sectionDto.getHeaderDto());
+//        } else {//update header
+//            header = this.headerService.updateHeader(sectionDto.getHeaderDto());
+//        }
 
         sectionUpdate = readSection(sectionDto.getId());
         if (sectionUpdate == null) {
@@ -72,8 +68,8 @@ public class SectionServiceImpl implements SectionService {
 
         sectionUpdate.setTitle(sectionDto.getTitle());
 //        sectionUpdate.setTarget(sectionDto.getTarget());
-        sectionUpdate.setTarget("sample");
-        sectionUpdate.setHeader(header);
+//        sectionUpdate.setTarget("sample");
+//        sectionUpdate.setHeader(header);
 
         this.deleteParagraphs(sectionUpdate, sectionDto);
 

@@ -23,8 +23,8 @@ public class SectionMapper {
         return SectionDto.builder()
                 .id(section.getId())
                 .title(section.getTitle())
-                .target(section.getTarget())
-                .headerDto(HeaderMapper.mapHeaderDto(section.getHeader()))
+//                .target(section.getTarget())
+//                .headerDto(HeaderMapper.mapHeaderDto(section.getHeader()))
                 .listParagraphsDto(listParagraphsDto)
                 .build();
     }

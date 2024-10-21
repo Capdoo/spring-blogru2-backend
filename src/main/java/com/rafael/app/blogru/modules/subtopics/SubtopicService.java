@@ -1,7 +1,6 @@
 package com.rafael.app.blogru.modules.subtopics;
 
-import com.rafael.app.blogru.modules.subtopics.Subtopic;
-import com.rafael.app.blogru.modules.subtopics.SubtopicDTO;
+import com.rafael.app.blogru.modules.topics.Topic;
 
 import java.util.List;
 
@@ -10,11 +9,12 @@ public interface SubtopicService {
     List<Subtopic> readAllSubtopics();
 
     //crud
-    Subtopic createSubtopic(SubtopicDTO subtopicDTO);
+    Subtopic createSubtopic(SubtopicDto subtopicDTO);
     Subtopic readSubtopic(String id);
-    Subtopic updateSubtopic(SubtopicDTO subtopicDTO);
+    Subtopic updateSubtopic(SubtopicDto subtopicDTO);
     Subtopic deleteSubtopic(String id);
 
     //business
     Subtopic readSubtopicByName(String name);
+    List<Subtopic> readSubtopicsByTopic(Topic topic);
 }

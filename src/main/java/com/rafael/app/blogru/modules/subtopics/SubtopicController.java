@@ -1,5 +1,7 @@
 package com.rafael.app.blogru.modules.subtopics;
 
+import com.rafael.app.blogru.modules.topics.Topic;
+import com.rafael.app.blogru.modules.topics.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,19 +19,22 @@ public class SubtopicController {
     @Autowired
     SubtopicService subtopicService;
 
-    @PreAuthorize("hasAuthority('user') or hasAuthority('creator') or hasAuthority('admin') or hasAuthority('superadmin')")
+    @Autowired
+    TopicService topicService;
+
+    @PreAuthorize("hasAuthority('user') or hasAuthority('admin') or hasAuthority('superadmin')")
     @GetMapping
     public ResponseEntity<Object> getAllSubtopics(){
         List<Subtopic> subtopicListDB = subtopicService.readAllSubtopics();
-        List<SubtopicDTO> subtopicDTOList = subtopicListDB.stream()
+        List<SubtopicDto> subtopicDtoList = subtopicListDB.stream()
                 .map(this::convertSubtopictoDTO)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok().body(subtopicDTOList);
+        return ResponseEntity.ok().body(subtopicDtoList);
     }
 
     @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin')")
     @PostMapping
-    public ResponseEntity<Object> registerSubtopic(@RequestBody SubtopicDTO subtopicDTO){
+    public ResponseEntity<Object> registerSubtopic(@RequestBody SubtopicDto subtopicDTO){
         Subtopic subtopic =  subtopicService.readSubtopicByName(subtopicDTO.getName());
         if (subtopic != null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Subtopic already exists");
@@ -38,7 +43,7 @@ public class SubtopicController {
         return ResponseEntity.ok().body(this.convertSubtopictoDTO(subtopicCreate));
     }
 
-    @PreAuthorize("hasAuthority('user') or hasAuthority('creator') or hasAuthority('admin') or hasAuthority('superadmin')")
+    @PreAuthorize("hasAuthority('user') or hasAuthority('admin') or hasAuthority('superadmin')")
     @GetMapping("/{id}")
     public ResponseEntity<Object> getSubtopicById(@PathVariable(value = "id") String id){
         Subtopic subtopicDB = subtopicService.readSubtopic(id);
@@ -48,9 +53,26 @@ public class SubtopicController {
         return ResponseEntity.ok().body(this.convertSubtopictoDTO(subtopicDB));
     }
 
+    @PreAuthorize("hasAuthority('user') or hasAuthority('admin') or hasAuthority('superadmin')")
+    @GetMapping("/read/topic/{id}")
+    public ResponseEntity<Object> readSubtopicsByTopicId(@PathVariable(value = "id") String id){
+
+        Topic topic = topicService.readTopic(id);
+
+        List<Subtopic> listSubtopics = subtopicService.readSubtopicsByTopic(topic);
+        List<SubtopicDto> listSubtopicsDto = listSubtopics.stream()
+                .map(this::convertSubtopictoDTO)
+                .collect(Collectors.toList());
+
+        if (topic == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Topic not found");
+        }
+        return ResponseEntity.ok().body(listSubtopicsDto);
+    }
+
     @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin')")
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateSubtopic(@PathVariable(value = "id") String id, @RequestBody SubtopicDTO subtopicDTO){
+    public ResponseEntity<Object> updateSubtopic(@PathVariable(value = "id") String id, @RequestBody SubtopicDto subtopicDTO){
         Subtopic subtopicDB = subtopicService.readSubtopic(id);
         if (subtopicDB == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Subtopic not found");
@@ -72,11 +94,11 @@ public class SubtopicController {
     }
 
 
-    private SubtopicDTO convertSubtopictoDTO(Subtopic subtopic){
-        return SubtopicDTO.builder()
+    private SubtopicDto convertSubtopictoDTO(Subtopic subtopic){
+        return SubtopicDto.builder()
                 .id(subtopic.getId())
                 .name(subtopic.getName())
-                .description(subtopic.getDescription())
+                .description(subtopic.getImage())
                 .registerDate(subtopic.getRegisterDate())
                 .build();
     }

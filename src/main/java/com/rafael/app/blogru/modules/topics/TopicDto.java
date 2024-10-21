@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Builder
-public class TopicDTO {
+public class TopicDto {
     private String id;
     private String name;
     private String description;

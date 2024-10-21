@@ -6,7 +6,7 @@ import java.util.Date;
 
 @Getter @Setter
 @Builder
-public class SubtopicDTO {
+public class SubtopicDto {
 
     private String id;
     private String name;

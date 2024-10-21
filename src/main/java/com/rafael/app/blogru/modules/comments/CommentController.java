@@ -14,48 +14,21 @@ public class CommentController {
 
 
 
-    @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin') or hasAuthority('creator') or hasAuthority('user')")
+    @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin') or hasAuthority('user')")
     @PostMapping
     ResponseEntity<Object> createComment(@RequestHeader(value = "Authorization") String token, @RequestBody CommentDto commentDTO){
         return commentResource.createComment(token, commentDTO);
     }
 
-    @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin') or hasAuthority('user') or hasAuthority('creator')")
+    @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin') or hasAuthority('user')")
     @GetMapping("/read/{id}")
     ResponseEntity<Object> getComentByPostIdAndCommentId(@PathVariable(value = "id") String id){
         return commentResource.readComment(id);
     }
 
-    @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin') or hasAuthority('user') or hasAuthority('creator')")
+    @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin') or hasAuthority('user')")
     @GetMapping("/read/post/{id}")
     ResponseEntity<Object> getAllComentsByPostId(@PathVariable(value = "id") String id){
         return commentResource.readCommentByPostId(id);
     }
-
-//    @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin') or hasAuthority('creator')")
-//    @PutMapping("/{id}")
-//    ResponseEntity<Object> updateComment(@PathVariable(value = "id") String postId, @RequestParam(value = "id") Integer id, @RequestBody CommentDto commentDTO){
-//        Post post = postService.readPost(postId);
-//        if (post == null){
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post does not exists");
-//        }
-//        if (post.getComment() == null){
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No comment found");
-//        }
-//        CommentModel commentTarget = commentService.readComment(postId, id);
-//        if (commentTarget == null){
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Comment not found");
-//        }
-//        commentDTO.setPost_id(postId);
-//        CommentModel commentUpdate = commentService.updateComment(commentDTO, id);
-//        return ResponseEntity.ok().body(commentUpdate);
-//    }
-//
-//
-//    @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin') or hasAuthority('creator')")
-//    @DeleteMapping("/{id}")
-//    ResponseEntity<Object> deleteComment(@PathVariable(value = "id") String postId, @RequestParam(value = "id") Integer id){
-//        return commentResource.deleteComment(postId, id);
-//    }
-
 }

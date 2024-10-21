@@ -1,6 +1,8 @@
 package com.rafael.app.blogru.modules.posts;
 
 import com.rafael.app.blogru.modules.sections.SectionDto;
+import com.rafael.app.blogru.modules.subtopics.SubtopicDto;
+import com.rafael.app.blogru.modules.topics.TopicDto;
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,6 +18,9 @@ public class PostDto {
 
     private String topicId;
     private String subtopicId;
+
+    private TopicDto topicDto;
+    private SubtopicDto subtopicDto;
 
     private String userId;
     private String register_date;

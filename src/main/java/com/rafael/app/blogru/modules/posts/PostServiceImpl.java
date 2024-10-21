@@ -178,4 +178,10 @@ public class PostServiceImpl implements PostService {
     public Post readByTitle(String title) {
         return postRepository.findByTitle(title).orElse(null);
     }
+
+    @Override
+    public List<Post> readByUser(User user) {
+        return postRepository.findAllByUser(user);
+    }
+
 }

@@ -19,8 +19,8 @@ public class ParagraphServiceImpl implements ParagraphService {
     @Override
     public Paragraph createParagraph(ParagraphDto paragraphDto) {
         Paragraph paragraphCreate = Paragraph.builder()
-                .title(paragraphDto.getTitle())
-                .description(paragraphDto.getDescription())
+//                .title(paragraphDto.getTitle())
+//                .description(paragraphDto.getDescription())
                 .content(paragraphDto.getContent())
                 .build();
 
@@ -43,8 +43,8 @@ public class ParagraphServiceImpl implements ParagraphService {
         }
 
         paragraphUpdate = readParagraph(paragraphDto.getId());
-        paragraphUpdate.setTitle(paragraphDto.getTitle());
-        paragraphUpdate.setDescription(paragraphDto.getDescription());
+//        paragraphUpdate.setTitle(paragraphDto.getTitle());
+//        paragraphUpdate.setDescription(paragraphDto.getDescription());
         paragraphUpdate.setContent(paragraphDto.getContent());
 
         return paragraphRepository.save(paragraphUpdate);

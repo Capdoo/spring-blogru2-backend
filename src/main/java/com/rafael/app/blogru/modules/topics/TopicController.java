@@ -17,11 +17,11 @@ public class TopicController {
     @Autowired
     TopicService topicService;
 
-    @PreAuthorize("hasAuthority('user') or hasAuthority('creator') or hasAuthority('admin') or hasAuthority('superadmin')")
+    @PreAuthorize("hasAuthority('user') or hasAuthority('admin') or hasAuthority('superadmin')")
     @GetMapping
     public ResponseEntity<Object> getAllTopics(){
         List<Topic> listTopicsDB = topicService.readAllTopics();
-        List<TopicDTO> listTopicsDTO = listTopicsDB.stream()
+        List<TopicDto> listTopicsDTO = listTopicsDB.stream()
                 .map(this::convertTopicToDTO)
                 .collect(Collectors.toList());
         return ResponseEntity.ok().body(listTopicsDTO);
@@ -29,7 +29,7 @@ public class TopicController {
 
     @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin')")
     @PostMapping
-    public ResponseEntity<Object> registerTopic(@RequestBody TopicDTO topicDTO){
+    public ResponseEntity<Object> registerTopic(@RequestBody TopicDto topicDTO){
         Topic topicDB = topicService.readTopicByName(topicDTO.getName());
         if (topicDB != null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Topic already exists");
@@ -38,7 +38,7 @@ public class TopicController {
         return ResponseEntity.ok().body(this.convertTopicToDTO(topicCreate));
     }
 
-    @PreAuthorize("hasAuthority('user') or hasAuthority('creator') or hasAuthority('admin') or hasAuthority('superadmin')")
+    @PreAuthorize("hasAuthority('user') or hasAuthority('admin') or hasAuthority('superadmin')")
     @GetMapping("/{id}")
     public ResponseEntity<Object> getTopicById(@PathVariable(value = "id") String id){
         Topic topicDB = topicService.readTopic(id);
@@ -50,7 +50,7 @@ public class TopicController {
 
     @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin')")
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateTopic(@PathVariable(value = "id") String id, @RequestBody TopicDTO topicDTO){
+    public ResponseEntity<Object> updateTopic(@PathVariable(value = "id") String id, @RequestBody TopicDto topicDTO){
         Topic topicDB = topicService.readTopic(id);
         if (topicDB == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Topic not found");
@@ -71,11 +71,11 @@ public class TopicController {
         return ResponseEntity.ok().body(this.convertTopicToDTO(topicDelete));
     }
 
-    private TopicDTO convertTopicToDTO(Topic topic){
-        return TopicDTO.builder()
+    private TopicDto convertTopicToDTO(Topic topic){
+        return TopicDto.builder()
                 .id(topic.getId())
                 .name(topic.getName())
-                .description(topic.getDescription())
+                .description(topic.getImage())
                 .registerDate(topic.getRegisterDate().toString())
                 .build();
     }

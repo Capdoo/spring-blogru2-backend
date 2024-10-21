@@ -11,7 +11,15 @@ import java.util.Set;
 
 @Getter
 @Setter
-public class SignupDTO {
+public class SignupDto {
+
+    @NotBlank
+    @Size(max=30)
+    private String firstName;
+
+    @NotBlank
+    @Size(max=30)
+    private String lastName;
 
     @NotBlank
     @Size(min=3, max=30)
@@ -23,7 +31,7 @@ public class SignupDTO {
     private String email;
 
     @NotBlank
-    @Size(min=6, max=60)
+    @Size(min=8, max=30)
     private String password;
 
     private Set<String> roles = new HashSet<>();

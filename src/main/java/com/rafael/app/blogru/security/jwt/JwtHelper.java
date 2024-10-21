@@ -47,6 +47,7 @@ public class JwtHelper {
     public String generateAccessToken(User user) {
         return JWT.create()
                 .withIssuer(issuer)
+                .withClaim("username",user.getUsername())
                 .withSubject(user.getId())
                 .withIssuedAt(new Date())
                 .withExpiresAt(new Date(new Date().getTime() + accessTokenExpirationMs))
@@ -56,6 +57,7 @@ public class JwtHelper {
     public String generateRefreshToken(User user, String tokenId) {
         return JWT.create()
                 .withIssuer(issuer)
+                .withClaim("username",user.getUsername())
                 .withSubject(user.getId())
                 .withClaim("tokenId", tokenId)
                 .withIssuedAt(new Date())

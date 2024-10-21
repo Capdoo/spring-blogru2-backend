@@ -16,14 +16,14 @@ public class Topic {
     @Id
     private String id;
     private String name;
-    private String description;
+    private String image;
     private Date registerDate;
     private String userId;
     private Date modificationDate;
 
-    public Topic(String name, String description){
+    public Topic(String name, String image){
         this.name = name;
-        this.description = description;
+        this.image = image;
         this.registerDate = new Date();
     }
 

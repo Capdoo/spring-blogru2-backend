@@ -1,6 +1,7 @@
 package com.rafael.app.blogru.security.document;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -15,6 +16,7 @@ import java.util.Set;
 
 @Document
 @Data
+@NoArgsConstructor
 public class User implements UserDetails {
 
     @Id
@@ -23,6 +25,12 @@ public class User implements UserDetails {
     @Indexed(unique = true)
     @NonNull
     private String username;
+
+    @NonNull
+    private String firstName;
+
+    @NonNull
+    private String lastName;
 
     @Indexed(unique = true)
     @NonNull
@@ -37,13 +45,19 @@ public class User implements UserDetails {
     @Transient
     private Collection<? extends GrantedAuthority> authorities;
 
-
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
     }
 
+    public User(String firstname, String lastName, String username, String email, String password) {
+        this.firstName = firstname;
+        this.lastName = lastName;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

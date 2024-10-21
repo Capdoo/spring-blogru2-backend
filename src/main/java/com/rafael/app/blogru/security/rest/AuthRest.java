@@ -3,9 +3,9 @@ package com.rafael.app.blogru.security.rest;
 import com.rafael.app.blogru.security.document.RefreshToken;
 import com.rafael.app.blogru.security.document.Role;
 import com.rafael.app.blogru.security.document.User;
-import com.rafael.app.blogru.security.dto.LoginDTO;
-import com.rafael.app.blogru.security.dto.SignupDTO;
-import com.rafael.app.blogru.security.dto.TokenDTO;
+import com.rafael.app.blogru.security.dto.LoginDto;
+import com.rafael.app.blogru.security.dto.SignupDto;
+import com.rafael.app.blogru.security.dto.TokenDto;
 import com.rafael.app.blogru.security.jwt.JwtHelper;
 import com.rafael.app.blogru.security.repository.RefreshTokenRepository;
 import com.rafael.app.blogru.security.repository.UserRepository;
@@ -31,7 +31,7 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/auth")
-public class AuthREST {
+public class AuthRest {
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -51,7 +51,7 @@ public class AuthREST {
     //For multiple devices
     @PostMapping("/login")
     @Transactional
-    public ResponseEntity<?> login(@Valid @RequestBody LoginDTO loginDTO){
+    public ResponseEntity<?> login(@Valid @RequestBody LoginDto loginDTO){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword())
         );
@@ -65,14 +65,14 @@ public class AuthREST {
         String accessToken = jwtHelper.generateAccessToken(user);
         String refreshTokenString = jwtHelper.generateRefreshToken(user, refreshToken.getId());
 
-        return ResponseEntity.ok(new TokenDTO(user.getId(), accessToken, refreshTokenString));
+        return ResponseEntity.ok(new TokenDto(user.getId(), accessToken, refreshTokenString));
     }
 
     @PostMapping("/signup")
     @Transactional
-    public ResponseEntity<?> signup(@Valid @RequestBody SignupDTO signupDTO){
+    public ResponseEntity<?> signup(@Valid @RequestBody SignupDto signupDTO){
 
-        User user = new User(signupDTO.getUsername(), signupDTO.getEmail(), passwordEncoder.encode(signupDTO.getPassword()));
+        User user = new User(signupDTO.getFirstName(), signupDTO.getLastName(), signupDTO.getUsername(), signupDTO.getEmail(), passwordEncoder.encode(signupDTO.getPassword()));
 
         Set<Role> roles = new HashSet<>();
         roles.add(roleService.readByName("user"));
@@ -95,11 +95,11 @@ public class AuthREST {
         String accessToken = jwtHelper.generateAccessToken(user);
         String refreshTokenString = jwtHelper.generateRefreshToken(user, refreshToken.getId());
 
-        return ResponseEntity.ok(new TokenDTO(user.getId(), accessToken, refreshTokenString));
+        return ResponseEntity.ok(new TokenDto(user.getId(), accessToken, refreshTokenString));
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestBody TokenDTO tokenDTO){
+    public ResponseEntity<?> logout(@RequestBody TokenDto tokenDTO){
         String refreshTokenString = tokenDTO.getRefreshToken();
         if (jwtHelper.validateRefreshToken(refreshTokenString) && refreshTokenRepository.existsById(jwtHelper.getTokenIdFromRefreshToken(refreshTokenString))){
             //valid and exists in DB
@@ -110,7 +110,7 @@ public class AuthREST {
     }
 
     @PostMapping("/logout-all")
-    public ResponseEntity<?> logoutAll(@RequestBody TokenDTO tokenDTO){
+    public ResponseEntity<?> logoutAll(@RequestBody TokenDto tokenDTO){
         String refreshTokenString = tokenDTO.getRefreshToken();
         if (jwtHelper.validateRefreshToken(refreshTokenString) && refreshTokenRepository.existsById(jwtHelper.getTokenIdFromRefreshToken(refreshTokenString))){
             //valid and exists in DB
@@ -121,20 +121,20 @@ public class AuthREST {
     }
 
     @PostMapping("/access-token")
-    public ResponseEntity<?> accessToken(@RequestBody TokenDTO tokenDTO){
+    public ResponseEntity<?> accessToken(@RequestBody TokenDto tokenDTO){
         String refreshTokenString = tokenDTO.getRefreshToken();
         if (jwtHelper.validateRefreshToken(refreshTokenString) && refreshTokenRepository.existsById(jwtHelper.getTokenIdFromRefreshToken(refreshTokenString))){
             //valid and exists in DB
             User user = userService.findById(jwtHelper.getUserIdFromRefreshToken(refreshTokenString));
             String accessToken = jwtHelper.generateAccessToken(user);
-            return ResponseEntity.ok(new TokenDTO(user.getId(), accessToken, refreshTokenString));
+            return ResponseEntity.ok(new TokenDto(user.getId(), accessToken, refreshTokenString));
         }
         throw new BadCredentialsException("Invalid token");
     }
 
     //Get a new refresh token and new access token
     @PostMapping("/refresh-token")
-    public ResponseEntity<?> refreshToken(@RequestBody TokenDTO tokenDTO){
+    public ResponseEntity<?> refreshToken(@RequestBody TokenDto tokenDTO){
         String refreshTokenString = tokenDTO.getRefreshToken();
         if (jwtHelper.validateRefreshToken(refreshTokenString) && refreshTokenRepository.existsById(jwtHelper.getTokenIdFromRefreshToken(refreshTokenString))){
             //valid and exists in DB
@@ -153,7 +153,7 @@ public class AuthREST {
             String newrefreshTokenString = jwtHelper.generateRefreshToken(user, refreshToken.getId());
 
 
-            return ResponseEntity.ok(new TokenDTO(user.getId(), accessToken, newrefreshTokenString));
+            return ResponseEntity.ok(new TokenDto(user.getId(), accessToken, newrefreshTokenString));
         }
         throw new BadCredentialsException("Invalid token");
     }
