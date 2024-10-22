@@ -3,6 +3,7 @@ package com.rafael.app.blogru.modules.posts;
 import com.rafael.app.blogru.modules.sections.SectionDto;
 import com.rafael.app.blogru.modules.subtopics.SubtopicDto;
 import com.rafael.app.blogru.modules.topics.TopicDto;
+import com.rafael.app.blogru.security.dto.UserDto;
 import lombok.Builder;
 import lombok.Data;
 
@@ -26,4 +27,6 @@ public class PostDto {
     private String register_date;
 
     private List<SectionDto> listSectionsDto;
+
+    private UserDto userDto;
 }

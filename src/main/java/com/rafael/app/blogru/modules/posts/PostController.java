@@ -18,13 +18,13 @@ public class PostController {
         return postResource.createPost(token, postDTO);
     }
 
-    @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin') or hasAuthority('user')")
+//    @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin') or hasAuthority('user')")
     @GetMapping("/read")
     public ResponseEntity<Object> readPosts(){
         return postResource.readPosts();
     }
 
-    @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin') or hasAuthority('user')")
+//    @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin') or hasAuthority('user')")
     @GetMapping("/read/{id}")
     public ResponseEntity<Object> readPost(@PathVariable(value = "id") String id){
         return postResource.readPostById(id);

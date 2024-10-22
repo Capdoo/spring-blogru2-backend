@@ -30,6 +30,13 @@ public class PostResource {
         List<PostDto> listPostDto;
 
         listPostDB = postService.readAllPosts();
+
+//        listPostDto = listPostDB.stream()
+//                .map(e -> {
+//                    User user
+//                    e.setUser();
+//                })
+
         listPostDto = listPostDB.stream()
                 .map(PostMapper::mapPostDto)
                 .collect(Collectors.toList());

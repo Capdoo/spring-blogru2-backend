@@ -6,6 +6,9 @@ import com.rafael.app.blogru.modules.subtopics.SubtopicDto;
 import com.rafael.app.blogru.modules.subtopics.SubtopicMapper;
 import com.rafael.app.blogru.modules.topics.TopicDto;
 import com.rafael.app.blogru.modules.topics.TopicMapper;
+import com.rafael.app.blogru.security.document.User;
+import com.rafael.app.blogru.security.dto.UserDto;
+import com.rafael.app.blogru.security.mapper.UserMapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +19,7 @@ public class PostMapper {
         TopicDto topicDto;
         SubtopicDto subtopicDto;
         List<SectionDto> listSectionsDto;
+        UserDto userDto;
 
         listSectionsDto = post.getListSections().stream()
                 .map(SectionMapper::mapSectionDto)
@@ -23,6 +27,7 @@ public class PostMapper {
 
         topicDto = TopicMapper.mapTopicDto(post.getTopic());
         subtopicDto = SubtopicMapper.mapSubtopicDto(post.getSubtopic());
+        userDto = UserMapper.mapUserDto(post.getUser());
 
         return PostDto.builder()
                 .id(post.getId())
@@ -35,6 +40,7 @@ public class PostMapper {
                 .userId(post.getUser().getId())
                 .register_date(post.getRegisterDate().toString())
                 .listSectionsDto(listSectionsDto)
+                .userDto(userDto)
                 .build();
     }
 }
