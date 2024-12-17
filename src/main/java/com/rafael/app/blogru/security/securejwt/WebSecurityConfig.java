@@ -53,7 +53,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(accessTokenEntryPoint).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/api/auth/**", "/api/posts/read","/api/posts/read/**")
+                .antMatchers("/api/auth/**",
+                        "/api/posts/read",
+                        "/api/posts/read/**",
+                        "/api/topics/read",
+                        "/api/topics/read/**,",
+                        "/api/subtopics/read,",
+                        "/api/subtopics/read/**")
                 .permitAll()
                 .anyRequest().authenticated();
         http.addFilterBefore(accessTokenFilter(), UsernamePasswordAuthenticationFilter.class);

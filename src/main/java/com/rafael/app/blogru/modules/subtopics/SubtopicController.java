@@ -22,8 +22,8 @@ public class SubtopicController {
     @Autowired
     TopicService topicService;
 
-    @PreAuthorize("hasAuthority('user') or hasAuthority('admin') or hasAuthority('superadmin')")
-    @GetMapping
+//    @PreAuthorize("hasAuthority('user') or hasAuthority('admin') or hasAuthority('superadmin')")
+    @GetMapping(value = "/read")
     public ResponseEntity<Object> getAllSubtopics(){
         List<Subtopic> subtopicListDB = subtopicService.readAllSubtopics();
         List<SubtopicDto> subtopicDtoList = subtopicListDB.stream()
@@ -53,7 +53,7 @@ public class SubtopicController {
         return ResponseEntity.ok().body(this.convertSubtopictoDTO(subtopicDB));
     }
 
-    @PreAuthorize("hasAuthority('user') or hasAuthority('admin') or hasAuthority('superadmin')")
+//    @PreAuthorize("hasAuthority('user') or hasAuthority('admin') or hasAuthority('superadmin')")
     @GetMapping("/read/topic/{id}")
     public ResponseEntity<Object> readSubtopicsByTopicId(@PathVariable(value = "id") String id){
 

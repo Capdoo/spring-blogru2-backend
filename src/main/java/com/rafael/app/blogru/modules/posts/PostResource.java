@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,9 @@ public class PostResource {
         List<Post> listPostDB;
         List<PostDto> listPostDto;
 
-        listPostDB = postService.readAllPosts();
+        listPostDB = postService.readAllPosts().stream()
+                .filter(e -> e.getEstId().equals(new BigDecimal(1)))
+                .collect(Collectors.toList());
 
 //        listPostDto = listPostDB.stream()
 //                .map(e -> {
@@ -79,11 +82,50 @@ public class PostResource {
 
         listPosts = postService.readByUser(user);
 
-        if (listPosts.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No posts were found");
-        }
+//        if (listPosts.isEmpty()) {
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No posts were found");
+//        }
 
         listPostsDto = listPosts.stream()
+                .filter(e -> e.getEstId().equals(new BigDecimal(1)))
+                .map(PostMapper::mapPostDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(listPostsDto);
+    }
+
+    public ResponseEntity<Object> readPostsByTopicId(String topicId) {
+        String userId;
+        User user;
+        List<Post> listPosts;
+        List<PostDto> listPostsDto;
+
+//        userId = jwtHelper.getUserIdFromAccessToken(token.split(" ")[1]);
+//        user = userService.findById(userId);
+//        if (user == null) {
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found");
+//        }
+
+//        listPosts = postService.readByUser(user);
+
+        listPostsDto = postService.readAllPosts().stream()
+                .filter(e -> e.getEstId().equals(new BigDecimal(1)))
+                .filter(e -> e.getTopic().getId().equals(topicId))
+                .map(PostMapper::mapPostDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok().body(listPostsDto);
+    }
+
+    public ResponseEntity<Object> readPostsBySubTopicId(String subTopicId) {
+        String userId;
+        User user;
+        List<Post> listPosts;
+        List<PostDto> listPostsDto;
+
+        listPostsDto = postService.readAllPosts().stream()
+                .filter(e -> e.getEstId().equals(new BigDecimal(1)))
+                .filter(e -> e.getSubtopic().getId().equals(subTopicId))
                 .map(PostMapper::mapPostDto)
                 .collect(Collectors.toList());
 
@@ -99,6 +141,8 @@ public class PostResource {
         }
         return ResponseEntity.ok().body(PostMapper.mapPostDto(postDb));
     }
+
+
 
     public ResponseEntity<Object> updatePost(@PathVariable(value = "id") String id, @RequestBody PostDto postDTO) {
         Post postDb;

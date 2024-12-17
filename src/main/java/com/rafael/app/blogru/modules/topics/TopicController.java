@@ -1,5 +1,7 @@
 package com.rafael.app.blogru.modules.topics;
 
+import com.rafael.app.blogru.modules.subtopics.SubtopicDto;
+import com.rafael.app.blogru.modules.subtopics.SubtopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +19,11 @@ public class TopicController {
     @Autowired
     TopicService topicService;
 
-    @PreAuthorize("hasAuthority('user') or hasAuthority('admin') or hasAuthority('superadmin')")
-    @GetMapping
+    @Autowired
+    SubtopicService subtopicService;
+
+//    @PreAuthorize("hasAuthority('user') or hasAuthority('admin') or hasAuthority('superadmin')")
+    @GetMapping("/read")
     public ResponseEntity<Object> getAllTopics(){
         List<Topic> listTopicsDB = topicService.readAllTopics();
         List<TopicDto> listTopicsDTO = listTopicsDB.stream()
@@ -72,9 +77,19 @@ public class TopicController {
     }
 
     private TopicDto convertTopicToDTO(Topic topic){
+        List<SubtopicDto> listSubTopicsDto;
+
+        listSubTopicsDto = subtopicService.readSubtopicsByTopic(topic).stream()
+                .map(e -> SubtopicDto.builder()
+                        .id(e.getId())
+                        .name(e.getName())
+                        .build())
+                .collect(Collectors.toList());
+
         return TopicDto.builder()
                 .id(topic.getId())
                 .name(topic.getName())
+                .listSubtopicsDto(listSubTopicsDto)
                 .description(topic.getImage())
                 .registerDate(topic.getRegisterDate().toString())
                 .build();

@@ -30,6 +30,16 @@ public class PostController {
         return postResource.readPostById(id);
     }
 
+    @GetMapping("/read/topic/{id}")
+    public ResponseEntity<Object> readPostsByTopicId(@PathVariable(value = "id") String topicId){
+        return postResource.readPostsByTopicId(topicId);
+    }
+
+    @GetMapping("/read/subtopic/{id}")
+    public ResponseEntity<Object> readPostsBySubTopicId(@PathVariable(value = "id") String subTopicId){
+        return postResource.readPostsBySubTopicId(subTopicId);
+    }
+
     @PreAuthorize("hasAuthority('admin') or hasAuthority('superadmin') or hasAuthority('user')")
     @GetMapping("/read/user")
     public ResponseEntity<Object> readPostsByUserId(@RequestHeader("Authorization") String token){

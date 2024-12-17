@@ -11,6 +11,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class Post {
     private List<Comment> listComments;
     private Date registerDate;
     private Date modificationDate;
+    private BigDecimal estId;
     //Content
 //    private List<HeaderModel> headers;
 //    private List<ParagraphModel> paragraphs;
