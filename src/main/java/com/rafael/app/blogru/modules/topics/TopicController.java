@@ -83,12 +83,14 @@ public class TopicController {
                 .map(e -> SubtopicDto.builder()
                         .id(e.getId())
                         .name(e.getName())
+                        .image(e.getImage())
                         .build())
                 .collect(Collectors.toList());
 
         return TopicDto.builder()
                 .id(topic.getId())
                 .name(topic.getName())
+                .image(topic.getImage())
                 .listSubtopicsDto(listSubTopicsDto)
                 .description(topic.getImage())
                 .registerDate(topic.getRegisterDate().toString())

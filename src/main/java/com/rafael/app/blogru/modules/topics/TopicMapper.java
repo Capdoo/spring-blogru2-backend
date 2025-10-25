@@ -6,7 +6,8 @@ public class TopicMapper {
 
         return TopicDto.builder()
                 .id(topic.getId())
-                .description(topic.getImage())
+                .description(topic.getName())
+                .image(topic.getImage())
                 .build();
     }
 

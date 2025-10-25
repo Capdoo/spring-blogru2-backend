@@ -14,6 +14,7 @@ import java.util.List;
 public class TopicDto {
     private String id;
     private String name;
+    private String image;
     private String description;
     private String registerDate;
     private List<SubtopicDto> listSubtopicsDto;

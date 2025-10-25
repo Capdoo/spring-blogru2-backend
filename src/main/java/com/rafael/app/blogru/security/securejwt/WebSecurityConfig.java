@@ -59,6 +59,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/topics/read",
                         "/api/topics/read/**,",
                         "/api/subtopics/read,",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
                         "/api/subtopics/read/**")
                 .permitAll()
                 .anyRequest().authenticated();

@@ -7,7 +7,8 @@ public class SubtopicMapper {
 
         return SubtopicDto.builder()
                 .id(subtopic.getId())
-                .description(subtopic.getImage())
+                .description(subtopic.getName())
+                .image(subtopic.getImage())
                 .build();
     }
 }

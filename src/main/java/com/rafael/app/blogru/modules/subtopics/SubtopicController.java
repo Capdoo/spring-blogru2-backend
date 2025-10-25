@@ -98,6 +98,7 @@ public class SubtopicController {
         return SubtopicDto.builder()
                 .id(subtopic.getId())
                 .name(subtopic.getName())
+                .image(subtopic.getImage())
                 .description(subtopic.getImage())
                 .registerDate(subtopic.getRegisterDate())
                 .build();

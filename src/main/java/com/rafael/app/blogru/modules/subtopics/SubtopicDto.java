@@ -12,5 +12,6 @@ public class SubtopicDto {
     private String name;
     private String description;
     private Date registerDate;
+    private String image;
 
 }
